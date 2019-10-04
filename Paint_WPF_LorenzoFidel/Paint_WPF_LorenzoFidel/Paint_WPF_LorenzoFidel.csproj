@@ -94,5 +94,36 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cut_menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paint_bucket.png" />
+    <Resource Include="Images\pencil.png" />
+    <Resource Include="Images\rubber.png" />
+    <Resource Include="Images\select.png" />
+    <Resource Include="Images\text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\brush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\curve_line.png" />
+    <Resource Include="Images\ellipse.png" />
+    <Resource Include="Images\rectangle.png" />
+    <Resource Include="Images\triangle.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
