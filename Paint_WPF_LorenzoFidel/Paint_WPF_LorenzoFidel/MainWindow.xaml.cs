@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -26,6 +27,20 @@ namespace Paint_WPF_LorenzoFidel
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            if (dlg.ShowDialog()==System.Windows.Forms.DialogResult.OK) {
+                rectColor.Fill = new SolidColorBrush(Color.FromArgb(dlg.Color.A,dlg.Color.R, dlg.Color.G, dlg.Color.B));
+            }
+        }
+
+        private void PasteItem_Click(object sender, RoutedEventArgs e)
         {
 
         }

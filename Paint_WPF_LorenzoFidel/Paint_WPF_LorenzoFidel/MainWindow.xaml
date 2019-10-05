@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas/xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Paint_WPF_LorenzoFidel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -36,7 +37,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="pasteItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            <MenuItem x:Name="pasteItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="PasteItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/paste.png"
@@ -201,9 +202,17 @@
             </MenuItem>
             <Label Content="Tamaño" Height="24" VerticalAlignment="Top" Margin="-38,28,-5,0" Width="55"/>
             <Separator/>
-            <Rectangle Fill="#FFF4F4F5" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
-            <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-34,28,-5,0" Width="55"/>
+            <Rectangle x:Name="rectColor" Fill="#FF6D6DAE" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
+            <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-33,28,0,0" Width="40"/>
+            <Button Content="Button" Height="31" VerticalAlignment="Top" Width="75" Margin="0,10,0,0" Click="Button_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
         </ToolBar>
-        <ScrollViewer HorizontalAlignment="Left" Height="100" Margin="468,195,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
