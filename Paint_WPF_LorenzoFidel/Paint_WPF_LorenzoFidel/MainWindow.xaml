@@ -204,5 +204,6 @@
             <Rectangle Fill="#FFF4F4F5" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
             <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-34,28,-5,0" Width="55"/>
         </ToolBar>
+        <ScrollViewer HorizontalAlignment="Left" Height="100" Margin="468,195,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
