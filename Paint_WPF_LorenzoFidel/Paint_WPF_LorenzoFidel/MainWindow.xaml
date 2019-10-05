@@ -186,6 +186,23 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
+            <Separator Margin="9,2,0,2"/>
+            <MenuItem x:Name="sizeLineItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="27" VerticalAlignment="Top" Margin="14,2,2,2">
+                <MenuItem.Icon>
+                    <Image Grid.Row="1"
+                           Source="/Images/sizeLine.png"
+                           RenderOptions.BitmapScalingMode="Fant"
+                           Stretch="Fill" Margin="-6,-6,-6,-6"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" RenderTransformOrigin="2.325,0.235"
+                           
+                            />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Label Content="Tamaño" Height="24" VerticalAlignment="Top" Margin="-38,28,-5,0" Width="55"/>
+            <Separator/>
+            <Rectangle Fill="#FFF4F4F5" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
+            <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-34,28,-5,0" Width="55"/>
         </ToolBar>
     </Grid>
 </Window>
