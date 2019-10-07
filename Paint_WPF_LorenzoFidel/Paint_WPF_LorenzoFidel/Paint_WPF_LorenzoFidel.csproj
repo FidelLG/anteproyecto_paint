@@ -147,5 +147,8 @@
   <ItemGroup>
     <Resource Include="Images\sizeLine.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paleta.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

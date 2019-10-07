@@ -6,11 +6,17 @@
         xmlns:xctk="http://schemas/xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Paint_WPF_LorenzoFidel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Paint .Net" Height="450" Width="800">
+
     <Grid>
+
         <Menu HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="792">
-            <MenuItem FontSize="14" Foreground="Black" Header="Archivo" ToolTip=""/>
-            <MenuItem Header="Menú"/>
+            <MenuItem FontSize="14" Foreground="Black" Header="Archivo" ToolTip="">
+                <MenuItem Header="Nuevo"/>
+                <MenuItem Header="Abrir"/>
+                <MenuItem Header="Guardar"/>
+                <MenuItem Header="Acerca de.."/>
+            </MenuItem>
         </Menu>
         <ToolBar HorizontalAlignment="Right" Height="57" Margin="0,24,0,0" VerticalAlignment="Top" Width="792">
             <MenuItem x:Name="cutItem" Margin="0,10" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141">
@@ -204,14 +210,38 @@
             <Separator/>
             <Rectangle x:Name="rectColor" Fill="#FF6D6DAE" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
             <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-33,28,0,0" Width="40"/>
-            <Button Content="Button" Height="31" VerticalAlignment="Top" Width="75" Margin="0,10,0,0" Click="Button_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0"/>
-                        <GradientStop Color="White" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="Black" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFA4A4A4" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF5B0F0F" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFE62607" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFEC822A" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFE4EE1D" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF16AE0F" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF1BBDB6" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF4692D1" Margin="-225,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF0B30AE" Margin="-195,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF8348C9" Margin="-165,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFCF1BCF" Margin="-135,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFE4AC18" Margin="-105,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFF1ED8D" Margin="-75,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FF6CD424" Margin="-45,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="White" Margin="-15,18,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
+            <Label Content="Colores
+                   " VerticalAlignment="Top" Margin="-118,28,0,-1" Width="51" Height="25"/>
+
+            <MenuItem x:Name="paletaItem"  Width="28"  Height="28" VerticalAlignment="Top" Margin="9,3,0,0" Click="PaletaItem_Click">
+                <MenuItem.Icon>
+                    <Image Grid.Row="1"
+                           Source="/Images/paleta.png"
+                           RenderOptions.BitmapScalingMode="Fant"
+                           Stretch="Uniform" Margin="-5,-5,-9,-5"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" RenderTransformOrigin="2.325,0.235"
+                           
+                            />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Label Content="Editar" VerticalAlignment="Top" Margin="-35,28,0,-1" Width="51" Height="25"/>
 
         </ToolBar>
     </Grid>

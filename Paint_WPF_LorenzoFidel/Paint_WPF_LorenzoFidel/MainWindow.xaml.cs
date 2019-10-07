@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace Paint_WPF_LorenzoFidel
 {
@@ -31,18 +32,33 @@ namespace Paint_WPF_LorenzoFidel
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ColorDialog dlg = new ColorDialog();
 
-            if (dlg.ShowDialog()==System.Windows.Forms.DialogResult.OK) {
-                rectColor.Fill = new SolidColorBrush(Color.FromArgb(dlg.Color.A,dlg.Color.R, dlg.Color.G, dlg.Color.B));
-            }
-        }
 
         private void PasteItem_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void PaletaItem_Click(object sender, RoutedEventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                rectColor.Fill = new SolidColorBrush(Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B));
+            }
+        }
+
+
+
+        private void ButtonClicker(object sender, RoutedEventArgs e)
+        {
+
+            var btn = (System.Windows.Controls.Button)sender;
+            rectColor.Fill = btn.Background;
+      
+        }
+
+       
     }
 }
