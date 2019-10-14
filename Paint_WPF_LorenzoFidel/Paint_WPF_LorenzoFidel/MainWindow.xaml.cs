@@ -60,5 +60,54 @@ namespace Paint_WPF_LorenzoFidel
         }
 
        
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "Imagenes|*.jpg;*.jpeg;*.png|All|*.*";
+
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+
+
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Imagenes|*.jpg;*.jpeg;*.png|All|*.*";
+
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.MessageBox.Show("Autor: Fidel Lorenzo García\nVersión: 1.0","Paint .Net Acerca de...");
+        }
+
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            toolbar.Width = MainForm.ActualWidth;
+            MenuMain.Width = MainForm.ActualWidth;
+            PictureBox.Width = MainForm.ActualWidth;
+            PictureBox.Height = MainForm.ActualHeight - (MenuMain.Height + toolbar.Height);
+        }
+
+        private void SizeLineItem_Click(object sender, RoutedEventArgs e)
+        {
+           Form1 w1 = new Form1();
+            w1.ShowDialog();
+            
+        }
+
+        private void BrushItem_Click(object sender, RoutedEventArgs e)
+        {
+            Form2 f2 = new Form2();
+            f2.ShowDialog();
+        }
     }
 }
