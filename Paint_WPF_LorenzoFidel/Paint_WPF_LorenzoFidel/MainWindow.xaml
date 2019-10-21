@@ -9,42 +9,97 @@
         mc:Ignorable="d"
         Title="Paint .Net" Height="450" Width="800" SizeChanged="MainWindow_SizeChanged">
 
-    <Grid Name="Canvas" >
+    <Window.Resources>
+        <RoutedUICommand x:Key="OpenCommand"/>
+        <RoutedCommand x:Key="SaveCommand"/>
+        <RoutedCommand x:Key="NewCommand"/>
+        <RoutedCommand x:Key="PrintCommand"/>
+        <RoutedCommand x:Key="UndoCommand"/>
+        <RoutedCommand x:Key="RedoCommand"/>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource OpenCommand}"
+                    Executed="Open_Click"/>
+        <CommandBinding Command="{StaticResource SaveCommand}"
+                    Executed="Save_Click"/>
+        <CommandBinding Command="{StaticResource NewCommand}"
+                    Executed="New_Click"/>
+        <CommandBinding Command="{StaticResource PrintCommand}"
+                    Executed="Print_Click"/>
+        <CommandBinding Command="{StaticResource UndoCommand}"
+                    Executed="Undo_Click"/>
+        <CommandBinding Command="{StaticResource RedoCommand}"
+                    Executed="Redo_Click"/>
+
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Source={StaticResource OpenCommand}}" Key="O" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource SaveCommand}}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource NewCommand}}" Key="N" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource PrintCommand}}" Key="P" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource UndoCommand}}" Key="Z" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource RedoCommand}}" Key="Y" Modifiers="Ctrl" />
+    </Window.InputBindings>
+    <Grid Name="Canvas" Background="#FFF0F0F0" >
 
         <Menu Name="MenuMain" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="792">
             <MenuItem FontSize="14" Foreground="Black" Header="Archivo" ToolTip="">
-                <MenuItem Header="Nuevo">
+                <MenuItem Header="Nuevo" InputGestureText="Ctrl + N"  Command="{Binding Source={StaticResource NewCommand}}">
+
                     <MenuItem.Icon>
                         <Image Source="/Images/newfile.png" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Abrir" Click="Open_Click">
+                <MenuItem  Header ="_Abrir"  InputGestureText="Ctrl + O" Command="{Binding Source={StaticResource OpenCommand}}">
+
+                    <MenuItem.InputBindings>
+                        <KeyBinding Key="O" Modifiers="Ctrl" />
+                    </MenuItem.InputBindings>
                     <MenuItem.Icon>
                         <Image Source="/Images/open.png" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Guardar" Click="Save_Click">
+                <MenuItem Header="Guardar"  InputGestureText="Ctrl + S" Command="{Binding Source={StaticResource SaveCommand}}">
                     <MenuItem.Icon>
                         <Image Source="/Images/save.png" />
                     </MenuItem.Icon>
                 </MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Imprimir" InputGestureText="Ctrl + P"  Command="{Binding Source={StaticResource PrintCommand}}">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/printer.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator></Separator>
                 <MenuItem Header="Acerca de.." Click="MenuItem_Click">
                     <MenuItem.Icon>
                         <Image Source="/Images/info.png" />
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
+            <MenuItem FontSize="14" Foreground="Black" Header="Herramientas" ToolTip="" Click="Tools_Click">
+            </MenuItem>
             <Separator Width="4"/>
-            <MenuItem Name="Undo" Width="25">
+            <MenuItem Name="Undo" Width="25" InputGestureText="Crtl + Z" ToolTip="Deshacer (Crtl + Z)" Command="{Binding Source={StaticResource UndoCommand}}">
+                <MenuItem.Effect>
+                    <DropShadowEffect/>
+                </MenuItem.Effect>
+                <MenuItem.InputBindings>
+                    <KeyBinding Key="Z" Modifiers="Ctrl"/>
+                </MenuItem.InputBindings>
                 <MenuItem.Icon>
                     <Image Source="/Images/undo.png" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Name="Redo" Width="26">
+            <MenuItem Name="Redo" Width="26"  ToolTip="Rehacer (Crtl + Y)" Command="{Binding Source={StaticResource RedoCommand}}" IsEnabled="False">
+                <MenuItem.Effect>
+                    <DropShadowEffect/>
+                </MenuItem.Effect>
                 <MenuItem.Icon>
                     <Image Source="/Images/redo.png" />
                 </MenuItem.Icon>
             </MenuItem>
+
         </Menu>
         <ToolBar Name="toolbar" Height="57" Margin="0,24,-10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="792" >
             <MenuItem x:Name="cutItem" Margin="0,10" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141">
@@ -147,6 +202,9 @@
             <Border BorderBrush="#FFB8B8B8" BorderThickness="1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="140" Margin="-145,8,0,0"/>
             <Separator/>
             <MenuItem x:Name="brushItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="33" VerticalAlignment="Top" Margin="18,4,0,0" Click="BrushItem_Click">
+                <MenuItem.Effect>
+                    <DropShadowEffect/>
+                </MenuItem.Effect>
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/brush.png"
@@ -211,7 +269,10 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator Margin="9,2,0,2"/>
-            <MenuItem x:Name="sizeLineItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="27" VerticalAlignment="Top" Margin="14,2,2,2" Click="SizeLineItem_Click">
+            <MenuItem x:Name="sizeLineItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="27" VerticalAlignment="Top" Margin="14,2,2,2" Click="SizeLineItem_Click" >
+                <MenuItem.InputBindings>
+                    <KeyBinding Key="Z" Modifiers="Ctrl"/>
+                </MenuItem.InputBindings>
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/sizeLine.png"
@@ -259,9 +320,8 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Label Content="Editar" VerticalAlignment="Top" Margin="-35,28,0,-1" Width="51" Height="25"/>
-          
+
         </ToolBar>
-        
-        <Canvas Name="PictureBox" HorizontalAlignment="Left" Height="338" Margin="0,81,0,0" VerticalAlignment="Top" Width="792" Background="White"/>
+        <InkCanvas Name="canvasMain" HorizontalAlignment="Left" Height="290" Margin="0,81,0,0" VerticalAlignment="Top" Width="503"/>
     </Grid>
 </Window>

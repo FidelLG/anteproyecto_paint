@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace Paint_WPF_LorenzoFidel
 {
-    public partial class Form2: Form
+    public partial class Form3 : Form
     {
-        public Form2()
+        public Form3()
         {
             InitializeComponent();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void Form3_Load(object sender, EventArgs e)
         {
 
         }
