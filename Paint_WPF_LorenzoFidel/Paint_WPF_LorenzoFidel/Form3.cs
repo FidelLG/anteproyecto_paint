@@ -19,7 +19,23 @@ namespace Paint_WPF_LorenzoFidel
 
         private void Form3_Load(object sender, EventArgs e)
         {
-
+           
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(validateTextBox1.TextTxt, "[^0-9]") &&
+                System.Text.RegularExpressions.Regex.IsMatch(validateTextBox2.TextTxt, "[^0-9]"))
+            {
+                label3.Text = "Inserte valores numéricos";
+
+            } else {
+
+                DialogResult = DialogResult.OK;
+                label3.Text = "";
+            }
+        }
+
+       
     }
 }

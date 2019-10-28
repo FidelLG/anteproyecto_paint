@@ -59,7 +59,7 @@
                         <Image Source="/Images/open.png" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Guardar"  InputGestureText="Ctrl + S" Command="{Binding Source={StaticResource SaveCommand}}">
+                <MenuItem Header="Guardar"  InputGestureText="Ctrl + S" Command="{Binding Source={StaticResource SaveCommand}}" >
                     <MenuItem.Icon>
                         <Image Source="/Images/save.png" />
                     </MenuItem.Icon>
@@ -101,7 +101,7 @@
             </MenuItem>
 
         </Menu>
-        <ToolBar Name="toolbar" Height="57" Margin="0,24,-10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="792" >
+        <ToolBar Name="toolbar" Height="57" Margin="0,24,0,0" VerticalAlignment="Top" >
             <MenuItem x:Name="cutItem" Margin="0,10" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
@@ -139,7 +139,7 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator/>
-            <MenuItem x:Name="pencilItem" Margin="10,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            <MenuItem x:Name="pencilItem" Margin="10,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="PencilItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/pencil.png"
@@ -151,7 +151,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="eraseItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            <MenuItem x:Name="eraseItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="EraseItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/rubber.png"
@@ -163,7 +163,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="bucketItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            <!--<MenuItem x:Name="bucketItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/paint_bucket.png"
@@ -174,8 +174,8 @@
                            
                             />
                 </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem x:Name="textItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            </MenuItem>-->
+            <MenuItem x:Name="textItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="TextItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/text.png"
@@ -187,7 +187,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="selectItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
+            <MenuItem x:Name="selectItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="SelectItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/select.png"
@@ -199,7 +199,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <Border BorderBrush="#FFB8B8B8" BorderThickness="1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="140" Margin="-145,8,0,0"/>
+            <Border BorderBrush="#FFB8B8B8" BorderThickness="1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="108" Margin="-115,9,0,0"/>
             <Separator/>
             <MenuItem x:Name="brushItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="33" VerticalAlignment="Top" Margin="18,4,0,0" Click="BrushItem_Click">
                 <MenuItem.Effect>
@@ -220,7 +220,7 @@
             <Label Content="Pinceles" Height="24" VerticalAlignment="Top" Margin="-38,28,0,0" Width="55"/>
             <Separator/>
             <Border BorderBrush="#FFB8B8B8" BorderThickness="1" Height="45" VerticalAlignment="Top" Width="109" Margin="8,4,0,0"/>
-            <MenuItem x:Name="lineItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-189,15,0,0">
+            <MenuItem x:Name="lineItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-189,15,0,0" Click="LineItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/line.png"
@@ -232,7 +232,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="ellipseItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-90,15,0,0">
+            <MenuItem x:Name="ellipseItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-90,15,0,0" Click="drawCircleAp">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/ellipse.png"
@@ -286,7 +286,7 @@
             </MenuItem>
             <Label Content="Tamaño" Height="24" VerticalAlignment="Top" Margin="-38,28,-5,0" Width="55"/>
             <Separator/>
-            <Rectangle x:Name="rectColor" Fill="#FF6D6DAE" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
+            <Rectangle x:Name="rectColor" Fill="{x:Static SystemColors.DesktopBrush}" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
             <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-33,28,0,0" Width="40"/>
             <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="Black" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
             <Button Content="" Height="15" VerticalAlignment="Top" Width="15" Background="#FFA4A4A4" Margin="0,3,0,0" BorderBrush="#FFD4D4D4" Click="ButtonClicker"/>
@@ -322,6 +322,6 @@
             <Label Content="Editar" VerticalAlignment="Top" Margin="-35,28,0,-1" Width="51" Height="25"/>
 
         </ToolBar>
-        <InkCanvas Name="canvasMain" HorizontalAlignment="Left" Height="290" Margin="0,81,0,0" VerticalAlignment="Top" Width="503"/>
+        <InkCanvas Name="canvasMain" HorizontalAlignment="Left" Height="290" Margin="0,81,0,0" VerticalAlignment="Top" Width="503" MouseDown="CanvasMain_MouseDown_1" MouseUp="CanvasMain_MouseUp_1" MouseMove="CanvasMain_MouseMove"/>
     </Grid>
 </Window>
