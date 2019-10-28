@@ -13,4 +13,14 @@
 ||- Añadidas las imágenes de los submenús y sus respectivos atajos de teclado (Crtl + N) etc...|
 ||- Trabajando en las funciones para pintar, de momento solo funciona el lápiz.|
 ||- Añadidos algunos Tooltips, estarán terminados para la próxima revisión.|
+|28/11/2019|- Elimnada la opción de "Cubo pintura" por incompatiblidad con InkCanvas (Se intentará agregar la forma "Polígono" para compensar). |
+||- Menú "Guardar" funcionando (Comprobar si se realizaron cambios).|
+||- Menú "Abrir" funcionando (Comprobar si se realizaron cambios).|
+||- Herramienta "Lápiz" funcionando.|
+||- Herramienta "Borrar" funcionando.|
+||- Herramienta "Texto" funcionando (Límite de 1 TextBox,faltan más comprobaciones).|
+||- Herramienta "Seleccionar" funcionando.|
+||- Herramienta "Línea" funcionando, falta pulirla.|
+||- Los botones de los colores tanto como el ColorDialog ya se aplican a las herramientas de dibujar.|
+||- Creado un nuevo componente para la validación de TextBox (Usados en el formulario para cambiar el tamaño del InkCanvas, también funcionando).|
 
