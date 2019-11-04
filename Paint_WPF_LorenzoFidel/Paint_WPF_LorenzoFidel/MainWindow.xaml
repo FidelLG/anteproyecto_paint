@@ -16,6 +16,10 @@
         <RoutedCommand x:Key="PrintCommand"/>
         <RoutedCommand x:Key="UndoCommand"/>
         <RoutedCommand x:Key="RedoCommand"/>
+        <RoutedCommand x:Key="CutCommand"/>
+        <RoutedCommand x:Key="CopyCommand"/>
+        <RoutedCommand x:Key="PasteCommand"/>
+
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource OpenCommand}"
@@ -30,6 +34,12 @@
                     Executed="Undo_Click"/>
         <CommandBinding Command="{StaticResource RedoCommand}"
                     Executed="Redo_Click"/>
+        <CommandBinding Command="{StaticResource CutCommand}"
+                    Executed="CutItem_Click"/>
+        <CommandBinding Command="{StaticResource CopyCommand}"
+                    Executed="CopyItem_Click"/>
+        <CommandBinding Command="{StaticResource PasteCommand}"
+                    Executed="PasteItem_Click"/>
 
     </Window.CommandBindings>
     <Window.InputBindings>
@@ -39,6 +49,9 @@
         <KeyBinding Command="{Binding Source={StaticResource PrintCommand}}" Key="P" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Source={StaticResource UndoCommand}}" Key="Z" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Source={StaticResource RedoCommand}}" Key="Y" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource CutCommand}}" Key="X" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource CopyCommand}}" Key="C" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource PasteCommand}}" Key="V" Modifiers="Ctrl" />
     </Window.InputBindings>
     <Grid Name="Canvas" Background="#FFF0F0F0" >
 
@@ -65,7 +78,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Imprimir" InputGestureText="Ctrl + P"  Command="{Binding Source={StaticResource PrintCommand}}">
+                <MenuItem Header="Imprimir" InputGestureText="Ctrl + P"  Command="{Binding Source={StaticResource PrintCommand}}" >
                     <MenuItem.Icon>
                         <Image Source="/Images/printer.png" />
                     </MenuItem.Icon>
@@ -80,7 +93,7 @@
             <MenuItem FontSize="14" Foreground="Black" Header="Herramientas" ToolTip="" Click="Tools_Click">
             </MenuItem>
             <Separator Width="4"/>
-            <MenuItem Name="Undo" Width="25" InputGestureText="Crtl + Z" ToolTip="Deshacer (Crtl + Z)" Command="{Binding Source={StaticResource UndoCommand}}">
+            <MenuItem Name="Undo" Width="25" InputGestureText="Crtl + Z" ToolTip="Deshacer (Crtl + Z)" Command="{Binding Source={StaticResource UndoCommand}}" Click="Undo_Click_1">
                 <MenuItem.Effect>
                     <DropShadowEffect/>
                 </MenuItem.Effect>
@@ -101,8 +114,9 @@
             </MenuItem>
 
         </Menu>
-        <ToolBar Name="toolbar" Height="57" Margin="0,24,0,0" VerticalAlignment="Top" >
-            <MenuItem x:Name="cutItem" Margin="0,10" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141">
+        <ToolBar Name="toolbar" Height="57" Margin="0,24,0,0" VerticalAlignment="Top" Header="" >
+            <MenuItem x:Name="cutItem" Margin="0,10" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141"
+                      InputGestureText="Ctrl + X"  Command="{Binding Source={StaticResource CutCommand}}">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/cut_menu.png"
@@ -114,7 +128,8 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="copyItem" Margin="5,0,0,0" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141">
+            <MenuItem x:Name="copyItem" Margin="5,0,0,0" FontSize="24" Width="22" VerticalAlignment="Center" HorizontalAlignment="Center" Height="32" RenderTransformOrigin="1.142,-2.141" 
+                      InputGestureText="Ctrl + C"  Command="{Binding Source={StaticResource CopyCommand}}">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/copy.png"
@@ -126,7 +141,8 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="pasteItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="PasteItem_Click">
+            <MenuItem x:Name="pasteItem" Margin="5,10,10,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" 
+                      InputGestureText="Ctrl + V"  Command="{Binding Source={StaticResource PasteCommand}}">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/paste.png"
@@ -151,7 +167,19 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="eraseItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="EraseItem_Click">
+            <MenuItem x:Name="eraseItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="EraseItem_Click" ToolTip="Borra el trazo punto por punto">
+                <MenuItem.Icon>
+                    <Image Grid.Row="1"
+                           Source="/Images/eraser.png"
+                           RenderOptions.BitmapScalingMode="Fant"
+                           Stretch="Fill" Margin="-2,-3,-2,-3"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" RenderTransformOrigin="2.325,0.235"
+                           
+                            />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="EraseStrokeItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="EraseStrokeItem_Click" ToolTip="Borra el trazado de un Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/rubber.png"
@@ -163,18 +191,6 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <!--<MenuItem x:Name="bucketItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top">
-                <MenuItem.Icon>
-                    <Image Grid.Row="1"
-                           Source="/Images/paint_bucket.png"
-                           RenderOptions.BitmapScalingMode="Fant"
-                           Stretch="Fill" Margin="-2,-3,-2,-3"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" RenderTransformOrigin="2.325,0.235"
-                           
-                            />
-                </MenuItem.Icon>
-            </MenuItem>-->
             <MenuItem x:Name="textItem" Margin="5,10,0,0" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="32" VerticalAlignment="Top" Click="TextItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
@@ -199,7 +215,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <Border BorderBrush="#FFB8B8B8" BorderThickness="1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="108" Margin="-115,9,0,0"/>
+            <Border BorderBrush="#FFB8B8B8" BorderThickness="1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="135" Margin="-142,9,0,0"/>
             <Separator/>
             <MenuItem x:Name="brushItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="33" VerticalAlignment="Top" Margin="18,4,0,0" Click="BrushItem_Click">
                 <MenuItem.Effect>
@@ -244,7 +260,7 @@
                             />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="rectangleItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-35,15,0,0">
+            <MenuItem x:Name="rectangleItem" FontSize="24" Width="22" RenderTransformOrigin="1.142,-2.141" Height="22" VerticalAlignment="Top" Margin="-35,15,0,0" Click="RectangleItem_Click">
                 <MenuItem.Icon>
                     <Image Grid.Row="1"
                            Source="/Images/rectangle.png"
@@ -269,22 +285,10 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator Margin="9,2,0,2"/>
-            <MenuItem x:Name="sizeLineItem" FontSize="24" Width="23" RenderTransformOrigin="1.142,-2.141" Height="27" VerticalAlignment="Top" Margin="14,2,2,2" Click="SizeLineItem_Click" >
-                <MenuItem.InputBindings>
-                    <KeyBinding Key="Z" Modifiers="Ctrl"/>
-                </MenuItem.InputBindings>
-                <MenuItem.Icon>
-                    <Image Grid.Row="1"
-                           Source="/Images/sizeLine.png"
-                           RenderOptions.BitmapScalingMode="Fant"
-                           Stretch="Fill" Margin="-6,-6,-6,-6"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center" RenderTransformOrigin="2.325,0.235"
-                           
-                            />
-                </MenuItem.Icon>
-            </MenuItem>
-            <Label Content="Tamaño" Height="24" VerticalAlignment="Top" Margin="-38,28,-5,0" Width="55"/>
+            <Label Content="Tamaño Pincel" Height="26" VerticalAlignment="Top" Margin="0,-4,0,0"/>
+            <Label Content="Tamaño Texto" Height="25" VerticalAlignment="Top" Margin="-86,25,0,0"/>
+            <Slider x:Name="SliderStroke" Maximum="3" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Width="69" ValueChanged="SliderStroke_ValueChanged" Margin="5,0,-30,28" RenderTransformOrigin="1.612,0.662" />
+            <Slider x:Name="SliderText" Maximum="50" TickPlacement="None" TickFrequency="1" IsSnapToTickEnabled="True" Width="69" Margin="-39,28,0,-5" ValueChanged="SliderText_ValueChanged"  />
             <Separator/>
             <Rectangle x:Name="rectColor" Fill="{x:Static SystemColors.DesktopBrush}" Height="28" Stroke="Black" VerticalAlignment="Top" Width="28" Margin="9,4,0,0"/>
             <Label Content="Color" Height="24" VerticalAlignment="Top" Margin="-33,28,0,0" Width="40"/>
@@ -320,6 +324,7 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Label Content="Editar" VerticalAlignment="Top" Margin="-35,28,0,-1" Width="51" Height="25"/>
+
 
         </ToolBar>
         <InkCanvas Name="canvasMain" HorizontalAlignment="Left" Height="290" Margin="0,81,0,0" VerticalAlignment="Top" Width="503" MouseDown="CanvasMain_MouseDown_1" MouseUp="CanvasMain_MouseUp_1" MouseMove="CanvasMain_MouseMove"/>

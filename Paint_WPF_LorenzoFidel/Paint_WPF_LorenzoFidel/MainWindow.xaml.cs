@@ -27,20 +27,23 @@ namespace Paint_WPF_LorenzoFidel
     
     public partial class MainWindow : Window
     {
+
         bool canvasDraw = false;
         bool aux = false;
         System.Drawing.Color colorFromMenu;
         Item currentTool;
         int x, y ,lx, ly=0;
         System.Drawing.Color customColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
-        System.Windows.Controls.TextBox areaText = new System.Windows.Controls.TextBox();
+        
         System.Windows.Point start;
         System.Windows.Point end;
+        System.Windows.Controls.TextBox areaText;
 
         public MainWindow()
         {
             InitializeComponent();
             rectColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0,0,0));
+            canvasMain.EditingMode = InkCanvasEditingMode.None; 
            
         }
 
@@ -58,7 +61,8 @@ namespace Paint_WPF_LorenzoFidel
 
         private void PasteItem_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (canvasMain.CanPaste())
+                canvasMain.Paste();
         }
 
         private void PaletaItem_Click(object sender, RoutedEventArgs e)
@@ -148,9 +152,7 @@ namespace Paint_WPF_LorenzoFidel
 
         private void SizeLineItem_Click(object sender, RoutedEventArgs e)
         {
-           Form1 w1 = new Form1();
-            w1.ShowDialog();
-            
+        
         }
 
         private void BrushItem_Click(object sender, RoutedEventArgs e)
@@ -162,6 +164,18 @@ namespace Paint_WPF_LorenzoFidel
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.MessageBox.Show("IMPRIMIR");
+            System.Windows.Controls.PrintDialog prnt = new System.Windows.Controls.PrintDialog();
+            if (prnt.ShowDialog() == true)
+            {
+                System.Windows.Size pageSize = new System.Windows.Size(prnt.PrintableAreaWidth, prnt.PrintableAreaHeight);
+                canvasMain.Measure(pageSize);
+                canvasMain.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
+
+                if (prnt.ShowDialog() == true)
+                {
+                    prnt.PrintVisual(canvasMain, "Printing Canvas");
+                }
+            }
         }
 
         private void Undo_Click(object sender, RoutedEventArgs e)
@@ -177,6 +191,8 @@ namespace Paint_WPF_LorenzoFidel
         private void New_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.MessageBox.Show("NEW");
+            canvasMain.Children.Clear();
+            canvasMain.Strokes.Clear();
         }
 
        
@@ -194,12 +210,14 @@ namespace Paint_WPF_LorenzoFidel
         private void LineItem_Click(object sender, RoutedEventArgs e)
         {
             currentTool = Item.Line;
+            canvasDraw = true;
         }
       
 
         private void drawCircleAp(object sender, RoutedEventArgs e)
         {
-           
+            currentTool = Item.Ellipse;
+            canvasDraw = true;
         }
 
         private void SelectItem_Click(object sender, RoutedEventArgs e)
@@ -209,13 +227,14 @@ namespace Paint_WPF_LorenzoFidel
 
         private void TextItem_Click(object sender, RoutedEventArgs e)
         {
-
+            areaText = new System.Windows.Controls.TextBox();
             areaText.BorderThickness = new Thickness(0);
             System.Windows.Media.Color mainColor = ((SolidColorBrush)rectColor.Fill).Color;
 
             areaText.TextWrapping = TextWrapping.Wrap;
             areaText.Background = canvasMain.Background;
             areaText.FontSize = 15;
+            areaText.Background = System.Windows.Media.Brushes.Transparent;
             areaText.VerticalAlignment = VerticalAlignment.Center;
             areaText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             canvasMain.Children.Add(areaText);
@@ -235,17 +254,22 @@ namespace Paint_WPF_LorenzoFidel
 
         private void CanvasMain_MouseUp_1(object sender, MouseButtonEventArgs e)
         {
-            switch (currentTool) {
-                case Item.Line:
-                    DrawLine();
-                    break;
-                case Item.Triangle:
-                    break;
-                case Item.Ellipse:
-                    break;
-                case Item.Rectangle:
-                    break;
+            if (canvasDraw) {
+                switch (currentTool) {
+                    case Item.Line:
+                        DrawLine();
+                        break;
+                    case Item.Triangle:
+                        break;
+                    case Item.Ellipse:
+                        DrawEllipse();
+                        break;
+                    case Item.Rectangle:
+                        DrawRectangle();
+                        break;
+                }
             }
+            canvasDraw = false;
         }
         
 
@@ -261,11 +285,114 @@ namespace Paint_WPF_LorenzoFidel
             Line newLine = new Line();
             newLine.Stroke = new SolidColorBrush(mainColor);
             newLine.X1 = start.X;
-            newLine.Y1 = start.Y;
+            newLine.Y1 = start.Y-50;
             newLine.X2 = end.X;
-            newLine.Y2 = end.Y;
+            newLine.Y2 = end.Y-50;
             canvasMain.Children.Add(newLine);
 
+        }
+        private void DrawEllipse() {
+            Ellipse newEllipse = new Ellipse();
+            newEllipse.Fill = System.Windows.Media.Brushes.Gray;
+            newEllipse.Height = 10;
+            newEllipse.Width = 10;
+            if (end.X >= start.X)
+            {
+                newEllipse.SetValue(InkCanvas.LeftProperty, start.X);
+                newEllipse.Width = end.X - start.X;
+            }
+            else {
+                newEllipse.SetValue(InkCanvas.LeftProperty, end.X);
+                newEllipse.Width = start.X - end.X;
+            }
+
+            if (end.Y >= start.Y)
+            {
+                newEllipse.SetValue(InkCanvas.TopProperty, start.Y - 50);
+                newEllipse.Height = end.Y - start.Y;
+            }
+            else {
+                newEllipse.SetValue(InkCanvas.TopProperty, end.Y - 50);
+                newEllipse.Height = start.Y - end.Y;
+            }
+            canvasMain.Children.Add(newEllipse);
+        }
+
+        private void DrawRectangle() {
+            System.Windows.Shapes.Rectangle newRectangle = new System.Windows.Shapes.Rectangle();
+            newRectangle.Fill = System.Windows.Media.Brushes.DarkBlue;
+            if (end.X >= start.X)
+            {
+                newRectangle.SetValue(InkCanvas.LeftProperty, start.X);
+                newRectangle.Width = end.X - start.X;
+            }
+            else
+            {
+                newRectangle.SetValue(InkCanvas.LeftProperty, end.X);
+               newRectangle.Width = start.X - end.X;
+            }
+
+            if (end.Y >= start.Y)
+            {
+                newRectangle.SetValue(InkCanvas.TopProperty, start.Y - 50);
+                newRectangle.Height = end.Y - start.Y;
+            }
+            else
+            {
+                newRectangle.SetValue(InkCanvas.TopProperty, end.Y - 50);
+                newRectangle.Height = start.Y - end.Y;
+            }
+            canvasMain.Children.Add(newRectangle);
+        }
+        private void CopyItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (canvasMain.GetSelectedStrokes().Count > 0)
+            {
+                canvasMain.CopySelection();
+            }
+        }
+
+        private void CutItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (canvasMain.GetSelectedStrokes().Count > 0 || canvasMain.GetSelectedElements().Count > 0)
+            {
+                canvasMain.CutSelection();
+            }
+        }
+
+        private void SliderStroke_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderStroke.Value == 0)
+            {
+                SliderStroke.Minimum = 1;
+            }
+            else {
+                canvasMain.DefaultDrawingAttributes.Height = (SliderStroke.Value*3);
+                canvasMain.DefaultDrawingAttributes.Width = (SliderStroke.Value*3);
+        
+            }
+        }
+
+        private void SliderText_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            
+            areaText.FontSize = SliderText.Value;
+        }
+
+        private void RectangleItem_Click(object sender, RoutedEventArgs e)
+        {
+            currentTool = Item.Rectangle;
+            canvasDraw = true;
+        }
+
+        private void EraseStrokeItem_Click(object sender, RoutedEventArgs e)
+        {
+            canvasMain.EditingMode = InkCanvasEditingMode.EraseByStroke;
+        }
+
+        private void Undo_Click_1(object sender, RoutedEventArgs e)
+        {
+           
         }
 
       
@@ -280,7 +407,7 @@ namespace Paint_WPF_LorenzoFidel
             {
                 canvasMain.Width = Double.Parse(f3.validateTextBox1.TextTxt);
                 canvasMain.Height = Double.Parse(f3.validateTextBox2.TextTxt);
-
+                
             }
         }
 
