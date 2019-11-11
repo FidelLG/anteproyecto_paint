@@ -10,9 +10,10 @@ using System.Windows.Forms;
 
 namespace Paint_WPF_LorenzoFidel
 {
-    public partial class Form3 : Form
+    public partial class frmTamaño : Form
     {
-        public Form3()
+        public int num1, num2;
+        public frmTamaño()
         {
             InitializeComponent();
         }
@@ -24,18 +25,23 @@ namespace Paint_WPF_LorenzoFidel
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+
             if (System.Text.RegularExpressions.Regex.IsMatch(validateTextBox1.TextTxt, "[^0-9]") &&
                 System.Text.RegularExpressions.Regex.IsMatch(validateTextBox2.TextTxt, "[^0-9]"))
             {
                 label3.Text = "Inserte valores numéricos";
-
-            } else {
-
+            }
+            else
+            {
                 DialogResult = DialogResult.OK;
+
+
                 label3.Text = "";
+
             }
         }
 
-       
+
     }
 }

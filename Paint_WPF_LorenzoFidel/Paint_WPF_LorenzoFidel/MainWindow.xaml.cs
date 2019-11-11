@@ -1,96 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Forms;
-using System.ComponentModel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
-using System.Drawing;
-using System.IO;
 
 namespace Paint_WPF_LorenzoFidel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    
+
     public partial class MainWindow : Window
     {
 
         bool canvasDraw = false;
-        bool aux = false;
+        bool editing = false;
         System.Drawing.Color colorFromMenu;
         Item currentTool;
-        int x, y ,lx, ly=0;
+        int x, y, lx, ly = 0;
         System.Drawing.Color customColor = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
         
         System.Windows.Point start;
         System.Windows.Point end;
         System.Windows.Controls.TextBox areaText;
 
+        System.Windows.Ink.StrokeCollection _added;
+        System.Windows.Ink.StrokeCollection _removed;
+        private bool handle = true;
+
         public MainWindow()
         {
             InitializeComponent();
-            rectColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0,0,0));
-            canvasMain.EditingMode = InkCanvasEditingMode.None; 
+            rectColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+            canvasMain.EditingMode = InkCanvasEditingMode.None;
+            canvasMain.Strokes.StrokesChanged += Strokes_StrokesChanged;
+            canvasMain.Background = Brushes.White;
+            this.Title = "Paint .Net (" + canvasMain.Width + " ," + canvasMain.Height + ")";
+        }
+
+        //Cambio de tamaño del toolbar y menu con el grid
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            toolbar.Width = MainForm.ActualWidth;
+            MenuMain.Width = MainForm.ActualWidth;
+        }
+
+        //Cambio del titulo con el tamaño del inkcanvas, cuando este cambia.
+        private void CanvasMain_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.Title="Paint .Net (" + canvasMain.Width + " ," + canvasMain.Height + ")";
+        }
+
+        //Posicion delk raton al levantar
+        private void CanvasMain_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            canvasDraw = false;
+            lx = e.X;
+            ly = e.Y;
+        }
+
+        //Posición del ratón al bajar
+        private void CanvasMain_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            canvasDraw = true;
+            x = e.X;
+            y = e.Y;
            
         }
-
-       
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
+        //enumerado formas
         public enum Item
         {
-             Line, Triangle, Ellipse, Rectangle
+            Line, Triangle, Ellipse, Rectangle
         }
 
-
-        private void PasteItem_Click(object sender, RoutedEventArgs e)
+        //coleccion de cambios del stroke usado para deshacer y rehacer
+        private void Strokes_StrokesChanged(object sender, System.Windows.Ink.StrokeCollectionChangedEventArgs e)
         {
-            if (canvasMain.CanPaste())
-                canvasMain.Paste();
-        }
-
-        private void PaletaItem_Click(object sender, RoutedEventArgs e)
-        {
-            ColorDialog dlg = new ColorDialog();
-
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (handle)
             {
-                rectColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B));
-                canvasMain.DefaultDrawingAttributes.Color = System.Windows.Media.Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B);
+                _added = e.Added;
+                _removed = e.Removed;
             }
         }
 
 
-
-        private void ButtonClicker(object sender, RoutedEventArgs e)
+        //menu Archivo
+        //Nuevo
+        private void New_Click(object sender, RoutedEventArgs e)
         {
-
-            var btn = (System.Windows.Controls.Button)sender;
-            rectColor.Fill = btn.Background;
-            System.Windows.Media.Color x = ((SolidColorBrush)btn.Background).Color;
-            canvasMain.DefaultDrawingAttributes.Color = x;
-           
-      
+            
+            canvasMain.Children.Clear();
+            canvasMain.Strokes.Clear();
         }
-
-       
-
+        
+        //Abrir
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -111,23 +120,25 @@ namespace Paint_WPF_LorenzoFidel
                 i.Height = 50;
                 i.Width = 50;
                 this.canvasMain.Children.Add(i);
-               canvasMain.Select(canvasMain.Strokes, new UIElement[] { i });
+                canvasMain.Select(canvasMain.Strokes, new UIElement[] { i });
 
             }
         }
 
+        //Guardar
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "JPEG|*.jpeg|JPG|*.jpg|PNG|*.png|All|*.*";
 
-            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
 
                 string filename = saveFileDialog1.FileName;
-                RenderTargetBitmap rtb = new RenderTargetBitmap((int)this.canvasMain.ActualWidth, (int)this.canvasMain.ActualHeight, 0, 0, PixelFormats.Pbgra32);
+                RenderTargetBitmap rtb = new RenderTargetBitmap((int)this.canvasMain.RenderSize.Width, (int)this.canvasMain.RenderSize.Height,0, 0, PixelFormats.Pbgra32);
 
                 rtb.Render(canvasMain);
-                rtb.Render(areaText);
+               // rtb.Render(areaText);
 
                 using (FileStream file = new FileStream(filename, FileMode.Create))
                 {
@@ -138,29 +149,7 @@ namespace Paint_WPF_LorenzoFidel
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.MessageBox.Show("Autor: Fidel Lorenzo García\nVersión: 1.0","Paint .Net Acerca de...");
-        }
-
-        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            toolbar.Width = MainForm.ActualWidth;
-            MenuMain.Width = MainForm.ActualWidth;
-           
-        }
-
-        private void SizeLineItem_Click(object sender, RoutedEventArgs e)
-        {
-        
-        }
-
-        private void BrushItem_Click(object sender, RoutedEventArgs e)
-        {
-            Form2 f2 = new Form2();
-            f2.ShowDialog();
-        }
-
+        //Imprimir
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.MessageBox.Show("IMPRIMIR");
@@ -178,53 +167,108 @@ namespace Paint_WPF_LorenzoFidel
             }
         }
 
+        //Acerca de..
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // System.Windows.MessageBox.Show("Autor: Fidel Lorenzo García\nVersión: 1.0","Paint .Net Acerca de...");
+            System.Windows.MessageBox.Show(_added.Count.ToString(), "Paint .Net Acerca de...");
+
+        }
+
+        //Menu Herramientas (Tamaño Lienzo)
+        private void Tools_Click(object sender, RoutedEventArgs e)
+        {
+            frmTamaño f3 = new frmTamaño();
+            DialogResult res;
+            res = f3.ShowDialog();
+
+            if (res == System.Windows.Forms.DialogResult.OK)
+            {
+                canvasMain.Width = Double.Parse(f3.validateTextBox1.TextTxt);
+                canvasMain.Height = Double.Parse(f3.validateTextBox2.TextTxt);
+
+            }
+        }
+
+        //Bloque rehacer/deshacer
+
+        //deshacer
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("UNDO");
+
+
+            if (_added != null && _added.Count > 0)
+            {
+                handle = false;
+                canvasMain.Strokes.Remove(_added);
+                canvasMain.Strokes.Add(_removed);
+                handle = true;
+            }
+
         }
 
+        //rehacer
         private void Redo_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("REDO");
-        }
 
-        private void New_Click(object sender, RoutedEventArgs e)
+                handle = false;
+            if (_added!=null)
+            {
+                canvasMain.Strokes.Add(_added);
+                canvasMain.Strokes.Remove(_removed);
+                handle = true;
+            }
+        }
+        //Bloque Cortar,Copiar,Pegar
+        //Cortar
+        private void CutItem_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("NEW");
-            canvasMain.Children.Clear();
-            canvasMain.Strokes.Clear();
+            if (canvasMain.GetSelectedStrokes().Count > 0 || canvasMain.GetSelectedElements().Count > 0)
+            {
+                canvasMain.CutSelection();
+            }
         }
 
-       
+        //Copiar
+        private void CopyItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (canvasMain.GetSelectedStrokes().Count > 0)
+            {
+                canvasMain.CopySelection();
+            }
+        }
 
+        //Pegar
+        private void PasteItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (canvasMain.CanPaste())
+                canvasMain.Paste();
+        }
+
+
+        //Bloque Lápiz, borrar, texto selcción
+        //Lápiz
+        private void PencilItem_Click(object sender, RoutedEventArgs e)
+        {
+            canvasMain.EditingMode = InkCanvasEditingMode.Ink;
+        }
+
+        //Borrar por puntos
         private void EraseItem_Click(object sender, RoutedEventArgs e)
         {
+            
+            
             canvasMain.EditingMode = InkCanvasEditingMode.EraseByPoint;
         }
 
-        private void PencilItem_Click(object sender, RoutedEventArgs e)
+        //Borrar trazado entero
+        private void EraseStrokeItem_Click(object sender, RoutedEventArgs e)
         {
-            canvasMain.EditingMode = InkCanvasEditingMode.InkAndGesture;
+            
+            canvasMain.EditingMode = InkCanvasEditingMode.EraseByStroke;
         }
 
-        private void LineItem_Click(object sender, RoutedEventArgs e)
-        {
-            currentTool = Item.Line;
-            canvasDraw = true;
-        }
-      
-
-        private void drawCircleAp(object sender, RoutedEventArgs e)
-        {
-            currentTool = Item.Ellipse;
-            canvasDraw = true;
-        }
-
-        private void SelectItem_Click(object sender, RoutedEventArgs e)
-        {
-            canvasMain.EditingMode = InkCanvasEditingMode.Select;
-        }
-
+        //Texto
         private void TextItem_Click(object sender, RoutedEventArgs e)
         {
             areaText = new System.Windows.Controls.TextBox();
@@ -244,56 +288,75 @@ namespace Paint_WPF_LorenzoFidel
 
         }
 
-
-     
-
-        private void CanvasMain_MouseDown_1(object sender, MouseButtonEventArgs e)
+        //Selección
+        private void SelectItem_Click(object sender, RoutedEventArgs e)
         {
-            start = e.GetPosition(this);
+            
+            canvasMain.EditingMode = InkCanvasEditingMode.Select;
         }
 
-        private void CanvasMain_MouseUp_1(object sender, MouseButtonEventArgs e)
+        //Bloque formas
+        //Selección de línea
+        private void LineItem_Click(object sender, RoutedEventArgs e)
         {
-            if (canvasDraw) {
-                switch (currentTool) {
-                    case Item.Line:
-                        DrawLine();
-                        break;
-                    case Item.Triangle:
-                        break;
-                    case Item.Ellipse:
-                        DrawEllipse();
-                        break;
-                    case Item.Rectangle:
-                        DrawRectangle();
-                        break;
-                }
-            }
-            canvasDraw = false;
+            canvasMain.EditingMode = InkCanvasEditingMode.None;
+            currentTool = Item.Line;
+            canvasDraw = true;
         }
         
-
-        private void CanvasMain_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        //Dibujado de línea
+        private void DrawLine()
         {
-            if (e.LeftButton == MouseButtonState.Pressed) {
-                end = e.GetPosition(this);
-            }
-        }
-
-        private void DrawLine() {
             System.Windows.Media.Color mainColor = ((SolidColorBrush)rectColor.Fill).Color;
             Line newLine = new Line();
             newLine.Stroke = new SolidColorBrush(mainColor);
             newLine.X1 = start.X;
-            newLine.Y1 = start.Y-50;
+            newLine.Y1 = start.Y - 50;
             newLine.X2 = end.X;
-            newLine.Y2 = end.Y-50;
+            newLine.Y2 = end.Y - 50;
             canvasMain.Children.Add(newLine);
 
         }
-        private void DrawEllipse() {
+
+        //Selección de triángulo
+        private void TriangleItem_Click(object sender, RoutedEventArgs e)
+        {
+            currentTool = Item.Triangle;
+            canvasDraw = true;
+            canvasMain.EditingMode = InkCanvasEditingMode.None;
+        }
+
+        //Dibujado de trinángulo
+        private void DrawTriangle()
+        {
+            System.Windows.Media.Color mainColor = ((SolidColorBrush)rectColor.Fill).Color;
+            StylusPointCollection stroke1Points = new StylusPointCollection();
+            stroke1Points.Add(new StylusPoint(50, 10));
+            stroke1Points.Add(new StylusPoint(90, 50));
+            stroke1Points.Add(new StylusPoint(10, 50));
+            stroke1Points.Add(new StylusPoint(50, 10));
+
+            Stroke stroke1 = new Stroke(stroke1Points);
+            stroke1.DrawingAttributes.Color = mainColor;
+            canvasMain.Strokes.Add(stroke1);
+            
+        }
+
+        //Selección de elipse
+        private void drawCircleAp(object sender, RoutedEventArgs e)
+        {
+            canvasMain.EditingMode = InkCanvasEditingMode.None;
+            currentTool = Item.Ellipse;
+            canvasDraw = true;
+
+        }
+
+        //Dibujado de elipse
+        private void DrawEllipse()
+        {
             Ellipse newEllipse = new Ellipse();
-            newEllipse.Fill = System.Windows.Media.Brushes.Gray;
+            newEllipse.Stroke = Brushes.Black;
+            newEllipse.Fill = (SolidColorBrush)rectColor.Fill;
             newEllipse.Height = 10;
             newEllipse.Width = 10;
             if (end.X >= start.X)
@@ -301,7 +364,8 @@ namespace Paint_WPF_LorenzoFidel
                 newEllipse.SetValue(InkCanvas.LeftProperty, start.X);
                 newEllipse.Width = end.X - start.X;
             }
-            else {
+            else
+            {
                 newEllipse.SetValue(InkCanvas.LeftProperty, end.X);
                 newEllipse.Width = start.X - end.X;
             }
@@ -311,16 +375,28 @@ namespace Paint_WPF_LorenzoFidel
                 newEllipse.SetValue(InkCanvas.TopProperty, start.Y - 50);
                 newEllipse.Height = end.Y - start.Y;
             }
-            else {
+            else
+            {
                 newEllipse.SetValue(InkCanvas.TopProperty, end.Y - 50);
                 newEllipse.Height = start.Y - end.Y;
             }
             canvasMain.Children.Add(newEllipse);
         }
 
-        private void DrawRectangle() {
+        //Selección de rectángulo
+        private void RectangleItem_Click(object sender, RoutedEventArgs e)
+        {
+            currentTool = Item.Rectangle;
+            canvasDraw = true;
+            canvasMain.EditingMode = InkCanvasEditingMode.None;
+        }
+
+        //Dibujado de rectángulo
+        private void DrawRectangle()
+        {
             System.Windows.Shapes.Rectangle newRectangle = new System.Windows.Shapes.Rectangle();
-            newRectangle.Fill = System.Windows.Media.Brushes.DarkBlue;
+            newRectangle.Stroke = Brushes.Black;
+            newRectangle.Fill = (SolidColorBrush)rectColor.Fill;
             if (end.X >= start.X)
             {
                 newRectangle.SetValue(InkCanvas.LeftProperty, start.X);
@@ -329,7 +405,7 @@ namespace Paint_WPF_LorenzoFidel
             else
             {
                 newRectangle.SetValue(InkCanvas.LeftProperty, end.X);
-               newRectangle.Width = start.X - end.X;
+                newRectangle.Width = start.X - end.X;
             }
 
             if (end.Y >= start.Y)
@@ -344,87 +420,103 @@ namespace Paint_WPF_LorenzoFidel
             }
             canvasMain.Children.Add(newRectangle);
         }
-        private void CopyItem_Click(object sender, RoutedEventArgs e)
+        //LLamada a las distintas formas dependiendo del enumerado seleccionado
+        //Posicion del raton al moverse
+        private void CanvasMain_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (canvasMain.GetSelectedStrokes().Count > 0)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                canvasMain.CopySelection();
+                end = e.GetPosition(this);
             }
         }
 
-        private void CutItem_Click(object sender, RoutedEventArgs e)
+        //Posicion al bajarse el raton
+        private void CanvasMain_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            if (canvasMain.GetSelectedStrokes().Count > 0 || canvasMain.GetSelectedElements().Count > 0)
-            {
-                canvasMain.CutSelection();
-            }
+            start = e.GetPosition(this);
         }
 
+        //Switch con los enumerados
+        private void CanvasMain_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            
+            if (canvasDraw)
+            {
+                switch (currentTool)
+                {
+                    case Item.Line:
+                        DrawLine();
+                        break;
+                    case Item.Triangle:
+                        DrawTriangle();
+                        break;
+                    case Item.Ellipse:
+                        DrawEllipse();
+                        break;
+                    case Item.Rectangle:
+                        DrawRectangle();
+                        break;
+                }
+            }
+            canvasDraw = false;
+            
+        }
+
+        //Bloque tamaños
+        //Slider para cambiar el tamaño del lápiz
         private void SliderStroke_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (SliderStroke.Value == 0)
             {
                 SliderStroke.Minimum = 1;
             }
-            else {
-                canvasMain.DefaultDrawingAttributes.Height = (SliderStroke.Value*3);
-                canvasMain.DefaultDrawingAttributes.Width = (SliderStroke.Value*3);
-        
+            else
+            {
+                canvasMain.DefaultDrawingAttributes.Height = (SliderStroke.Value * 3);
+                canvasMain.DefaultDrawingAttributes.Width = (SliderStroke.Value * 3);
+
             }
         }
 
+        //slider para cambiar el tamaño de la fuente del textBox
         private void SliderText_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            
+
             areaText.FontSize = SliderText.Value;
         }
 
-        private void RectangleItem_Click(object sender, RoutedEventArgs e)
+        //Bloque Colores
+        //Todos los botones de colores asigan a un rectangulo su color, que sera el color actual
+        private void ButtonClicker(object sender, RoutedEventArgs e)
         {
-            currentTool = Item.Rectangle;
-            canvasDraw = true;
+
+            var btn = (System.Windows.Controls.Button)sender;
+            rectColor.Fill = btn.Background;
+            System.Windows.Media.Color x = ((SolidColorBrush)btn.Background).Color;
+            canvasMain.DefaultDrawingAttributes.Color = x;
+
+
         }
 
-        private void EraseStrokeItem_Click(object sender, RoutedEventArgs e)
+        //ColorDialog para una selección de colores más avanzada
+        private void PaletaItem_Click(object sender, RoutedEventArgs e)
         {
-            canvasMain.EditingMode = InkCanvasEditingMode.EraseByStroke;
-        }
+            ColorDialog dlg = new ColorDialog();
 
-        private void Undo_Click_1(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-      
-
-        private void Tools_Click(object sender, RoutedEventArgs e)
-        {
-            Form3 f3 = new Form3();
-            DialogResult res; 
-            res= f3.ShowDialog();
-
-            if (res == System.Windows.Forms.DialogResult.OK)
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                canvasMain.Width = Double.Parse(f3.validateTextBox1.TextTxt);
-                canvasMain.Height = Double.Parse(f3.validateTextBox2.TextTxt);
-                
+                rectColor.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B));
+                canvasMain.DefaultDrawingAttributes.Color = System.Windows.Media.Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B);
             }
         }
 
-        private void CanvasMain_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            canvasDraw = false;
-            lx = e.X;
-            ly = e.Y;
-        }
 
-        private void CanvasMain_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            canvasDraw = true;
-            x = e.X;
-            y = e.Y;
-        }
+
+
+        
+
 
     }
+
    
 }
