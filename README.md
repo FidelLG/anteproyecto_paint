@@ -23,4 +23,13 @@
 ||- Herramienta "Línea" funcionando, falta pulirla.|
 ||- Los botones de los colores tanto como el ColorDialog ya se aplican a las herramientas de dibujar.|
 ||- Creado un nuevo componente para la validación de TextBox (Usados en el formulario para cambiar el tamaño del InkCanvas, también funcionando).|
+|04/11/2019|- Herramienta "Cortar" funcionando.|
+||- Herramienta "Copiar" funcionando.|
+||- Herramienta "Pegar" funcionando.|
+||- Menú "Imprimir" funcionando.|
+||- Cambiado el botón de "Tamaño" por un slider, para elegir el tamaño del pincel y funcionando.|
+||- Añadido otro slider para el tamaño del texto, funcionando.|
+||- Herramienta "Elipse" funcionando.|
+||- Herramienta "Rectángulo" funcionando.|
+||- Añadida la herramienta pra borrar los trazos enteros de un click.|
 
