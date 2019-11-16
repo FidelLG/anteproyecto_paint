@@ -450,7 +450,8 @@ namespace Paint_WPF_LorenzoFidel
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Autor: Fidel Lorenzo García\nVersión: 1.0","Paint .Net Acerca de...");
+            System.Windows.MessageBox.Show("Autor: Fidel Lorenzo García\nVersión: 1.0.7","Paint .Net Acerca de...");
+            Console.WriteLine(canvasMain.Children.Count.ToString());
  
         }
 
