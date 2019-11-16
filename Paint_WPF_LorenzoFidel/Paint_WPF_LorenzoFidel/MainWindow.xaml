@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Paint_WPF_LorenzoFidel"
         Icon="/Images/paint.png"
         mc:Ignorable="d"
-        Title="Paint .Net" Height="450" Width="860" SizeChanged="MainWindow_SizeChanged" Topmost="True" ResizeMode="CanResizeWithGrip">
+        Title="Paint .Net" Height="450" Width="860" SizeChanged="MainWindow_SizeChanged" ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
         <RoutedUICommand x:Key="OpenCommand"/>
@@ -19,6 +19,7 @@
         <RoutedCommand x:Key="CutCommand"/>
         <RoutedCommand x:Key="CopyCommand"/>
         <RoutedCommand x:Key="PasteCommand"/>
+        <RoutedCommand x:Key="ImportCommand"/>
 
     </Window.Resources>
     <Window.CommandBindings>
@@ -40,6 +41,8 @@
                     Executed="CopyItem_Click"/>
         <CommandBinding Command="{StaticResource PasteCommand}"
                     Executed="PasteItem_Click"/>
+        <CommandBinding Command="{StaticResource ImportCommand}"
+                    Executed="Import_Click"/>
 
     </Window.CommandBindings>
     <Window.InputBindings>
@@ -52,6 +55,7 @@
         <KeyBinding Command="{Binding Source={StaticResource CutCommand}}" Key="X" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Source={StaticResource CopyCommand}}" Key="C" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Source={StaticResource PasteCommand}}" Key="V" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding Source={StaticResource ImportCommand}}" Key="I" Modifiers="Ctrl" />
     </Window.InputBindings>
     <Grid Name="Canvas" Background="#FFF0F0F0" Margin="0,0,-8,0" >
 
@@ -63,13 +67,22 @@
                         <Image Source="/Images/newfile.png" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem  Header ="_Abrir"  InputGestureText="Ctrl + O" Command="{Binding Source={StaticResource OpenCommand}}" ToolTip="Abre un archivo existente">
+                <MenuItem  Header ="Abrir"  InputGestureText="Ctrl + O" Command="{Binding Source={StaticResource OpenCommand}}" ToolTip="Abre un archivo existente">
 
                     <MenuItem.InputBindings>
                         <KeyBinding Key="O" Modifiers="Ctrl" />
                     </MenuItem.InputBindings>
                     <MenuItem.Icon>
                         <Image Source="/Images/open.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem  Header ="Importar"  InputGestureText="Ctrl + I" Command="{Binding Source={StaticResource ImportCommand}}" ToolTip="Importa un mapa de bits">
+
+                    <MenuItem.InputBindings>
+                        <KeyBinding Key="I" Modifiers="Ctrl" />
+                    </MenuItem.InputBindings>
+                    <MenuItem.Icon>
+                        <Image Source="/Images/import.png" />
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Guardar"  InputGestureText="Ctrl + S" Command="{Binding Source={StaticResource SaveCommand}}" ToolTip="Guarda tu lienzo en distintos formatos" >
@@ -310,8 +323,8 @@
 
         </ToolBar>
         <InkCanvas Name="canvasMain" HorizontalAlignment="Left" Height="290" Margin="0,81,0,0" VerticalAlignment="Top" Width="503" MouseDown="CanvasMain_MouseDown_1" MouseUp="CanvasMain_MouseUp_1" MouseMove="CanvasMain_MouseMove" SizeChanged="CanvasMain_SizeChanged">
-            
+
         </InkCanvas>
-        
+
     </Grid>
 </Window>

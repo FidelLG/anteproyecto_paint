@@ -1,6 +1,6 @@
 ﻿namespace Paint_WPF_LorenzoFidel
 {
-    partial class frmTamaño
+    partial class frmSize
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTamaño));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSize));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAccept = new System.Windows.Forms.Button();
             this.validateTextBox1 = new DIR2EV6.ValidateTextBox();
             this.validateTextBox2 = new DIR2EV6.ValidateTextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,15 +55,15 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Height";
             // 
-            // button1
+            // btnAccept
             // 
-            this.button1.Location = new System.Drawing.Point(94, 120);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Aceptar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnAccept.Location = new System.Drawing.Point(94, 120);
+            this.btnAccept.Name = "btnAccept";
+            this.btnAccept.Size = new System.Drawing.Size(121, 23);
+            this.btnAccept.TabIndex = 4;
+            this.btnAccept.Text = "Aceptar";
+            this.btnAccept.UseVisualStyleBackColor = true;
+            this.btnAccept.Click += new System.EventHandler(this.button1_Click);
             // 
             // validateTextBox1
             // 
@@ -93,24 +93,23 @@
             this.label3.Size = new System.Drawing.Size(0, 15);
             this.label3.TabIndex = 7;
             // 
-            // frmTamaño
+            // frmSize
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AcceptButton = this.btnAccept;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(307, 155);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.validateTextBox2);
             this.Controls.Add(this.validateTextBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "frmTamaño";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Name = "frmSize";
             this.Text = "Tamaño lienzo";
-            this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,7 +118,7 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAccept;
         public DIR2EV6.ValidateTextBox validateTextBox1;
         public DIR2EV6.ValidateTextBox validateTextBox2;
         private System.Windows.Forms.Label label3;
