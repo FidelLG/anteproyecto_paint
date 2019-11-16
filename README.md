@@ -32,4 +32,13 @@
 ||- Herramienta "Elipse" funcionando.|
 ||- Herramienta "Rectángulo" funcionando.|
 ||- Añadida la herramienta pra borrar los trazos enteros de un click.|
+|11/11/2019|- Herramienta "Triángulo" funcionando.|
+||- Eliminada la opción de "Pinceles", no encontre manera ninguna (seguiré buscando información).|
+||- Añadir al título el tamaño del lienzo actual, siempre que cambia de tamaño se actualiza.|
+|Problemas encontrados|- Deshacer y rehacer solo guardan un cambio, si se prueba a deshacer 2 seguidos falla.|
+||- Cortar, copiar, pegar, borrar sólo funcionan con el láapiz y triángulo, ya que son los unicos que se añaden a la colección Strokes, no he sido capaz de que funcionen con la línea, elipse y rectángulo, que los he tratado como shapes, y van a InkCanvas.Children|
+||- Cuando usas los menús nuevo, abrir y guardar, no se como detectar el cambio del InkCanvas para poder preguntar al usuario si quiere guardar el progreso actual.|
+||- Al guardar en formato imagen, aparece una barra de color negro en la parte superior.|
+
+
 
