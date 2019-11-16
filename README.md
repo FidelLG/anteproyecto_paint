@@ -39,6 +39,13 @@
 ||- Cortar, copiar, pegar, borrar sólo funcionan con el láapiz y triángulo, ya que son los unicos que se añaden a la colección Strokes, no he sido capaz de que funcionen con la línea, elipse y rectángulo, que los he tratado como shapes, y van a InkCanvas.Children|
 ||- Cuando usas los menús nuevo, abrir y guardar, no se como detectar el cambio del InkCanvas para poder preguntar al usuario si quiere guardar el progreso actual.|
 ||- Al guardar en formato imagen, aparece una barra de color negro en la parte superior.|
+|16/11/2019|- Añadaido el submenú "Importar"|
+||- Se ha modularizado el código en su medida|
+||- Documentación realizada|
+|Problemas solventados|- Deshacer y rehacer ya no falla, pero estan limitados a 1 deshacer y 1 rehacer, siempre el último Stroke|
+||- Al guardar en formato imagen, ya no guarda el area negra, guarda la imagen tal y como debería|
+||- Cuando usas los menús nuevo, abrir, ya piden al usuario si quieren guardar el progreso sin guardar|
+||- Arreglado un problema con el formulario secundario, donde cambiamos el tamaño del InkCanvas. No estaban bien escritas las expresiones del Regex.IsMatch|
 
 
 
