@@ -50,7 +50,7 @@ namespace Paint_WPF_LorenzoFidel
         /// <summary>   Objeto tipo Point usada para la posición de fin del ratón. </summary>
         System.Windows.Point end;
         /// <summary>   Objeto Texto que se usa en la herramienta "Texto" del programa. </summary>
-        System.Windows.Controls.TextBox areaText;
+        System.Windows.Controls.TextBox areaText = new System.Windows.Controls.TextBox();
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
@@ -83,6 +83,7 @@ namespace Paint_WPF_LorenzoFidel
             canvasMain.Strokes.StrokesChanged += Strokes_StrokesChanged;
             canvasMain.Background = Brushes.White;
             this.Title = "Paint .Net (" + canvasMain.Width + " ," + canvasMain.Height + ")";
+           
            
         }
 
@@ -118,7 +119,8 @@ namespace Paint_WPF_LorenzoFidel
         private void CanvasMain_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Title="Paint .Net (" + canvasMain.Width + " ," + canvasMain.Height + ")";
-           
+            areaText.MaxHeight = canvasMain.ActualHeight - 20;
+            areaText.MaxWidth = canvasMain.ActualWidth - 20;
         }
 
         //Posicion del raton al levantar
@@ -277,9 +279,9 @@ namespace Paint_WPF_LorenzoFidel
         //Se pregunta al usuario si desea guardar el progreso sin guardar, (Utilizando las colecciones Strokes y Children)
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Método para detectar si el InkCanvas ha sido modificado.
-        ///             Se pregunta al usuario si desea guardar el progreso sin guardar,
-        ///              (Utilizando las colecciones Strokes y Children) 
+        /// <summary>
+        /// Método para detectar si el InkCanvas ha sido modificado. Se pregunta al usuario si desea
+        /// guardar el progreso sin guardar,  (Utilizando las colecciones Strokes y Children)
         /// </summary>
         ///
         /// <remarks>   Fidi, 11/16/2019. </remarks>
@@ -349,7 +351,7 @@ namespace Paint_WPF_LorenzoFidel
 
             
         }
-
+    
         //Abrir
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -692,6 +694,8 @@ namespace Paint_WPF_LorenzoFidel
             areaText.Background = System.Windows.Media.Brushes.Transparent;
             areaText.VerticalAlignment = VerticalAlignment.Center;
             areaText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            areaText.MaxHeight = canvasMain.ActualHeight-20;
+            areaText.MaxWidth = canvasMain.ActualWidth-20;
             canvasMain.Children.Add(areaText);
             canvasMain.Select(new UIElement[] { areaText });
 
