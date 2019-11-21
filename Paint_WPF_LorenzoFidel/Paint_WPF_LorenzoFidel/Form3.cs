@@ -23,15 +23,18 @@ namespace Paint_WPF_LorenzoFidel
         {
            
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(validateTextBox1.TextTxt, "^[0-9]*$") &&
-                System.Text.RegularExpressions.Regex.IsMatch(validateTextBox2.TextTxt, "^[0-9]*$"))
+            if ((System.Text.RegularExpressions.Regex.IsMatch(validateTextBox1.TextTxt, "^[0-9]*$") &&
+                System.Text.RegularExpressions.Regex.IsMatch(validateTextBox2.TextTxt, "^[0-9]*$")) && 
+                !String.IsNullOrWhiteSpace(validateTextBox1.TextTxt) && !String.IsNullOrWhiteSpace(validateTextBox2.TextTxt) &&
+                Int32.Parse(validateTextBox1.TextTxt)>= 20 && Int32.Parse(validateTextBox2.TextTxt) >= 20)
+             
             {
                 DialogResult = DialogResult.OK;
                 label3.Text = "";
             }
             else
             {
-                label3.Text = "Inserte valores numéricos";
+                label3.Text = "Valor numérico mínimo: 20";
                 
             }
         }

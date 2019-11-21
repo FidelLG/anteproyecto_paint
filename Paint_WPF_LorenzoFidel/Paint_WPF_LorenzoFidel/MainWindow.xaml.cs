@@ -100,8 +100,8 @@ namespace Paint_WPF_LorenzoFidel
 
         private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            toolbar.Width = MainForm.ActualWidth;
-            MenuMain.Width = MainForm.ActualWidth;
+            toolbar.Width = MainForm.ActualWidth-20;
+            MenuMain.Width = MainForm.ActualWidth-20;
             
         }
 
@@ -119,8 +119,8 @@ namespace Paint_WPF_LorenzoFidel
         private void CanvasMain_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.Title="Paint .Net (" + canvasMain.Width + " ," + canvasMain.Height + ")";
-            areaText.MaxHeight = canvasMain.ActualHeight - 20;
-            areaText.MaxWidth = canvasMain.ActualWidth - 20;
+            areaText.MaxHeight = canvasMain.ActualHeight ;
+            areaText.MaxWidth = canvasMain.ActualWidth ;
         }
 
         //Posicion del raton al levantar
